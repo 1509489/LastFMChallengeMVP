@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Last FM Challenge MVP</string>
+    <string name="search_album">Search Album</string>
+    <string name="search_button">search button</string>
+</resources>
