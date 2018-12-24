@@ -1,0 +1,53 @@
+{"results":
+  {
+    "opensearch:Query":
+    {
+      "#text":"",
+      "role":"request",
+      "searchTerms":"cather 3",
+      "startPage":"1"
+    },
+    "opensearch:totalResults":"3",
+    "opensearch:startIndex":"0",
+    "opensearch:itemsPerPage":"50",
+    "albummatches":{
+      "album":[
+        {"name":"Marc Romboy Presents Musica Electronica Vol. 3",
+          "artist":"Spirit Catcher",
+          "url":"https://www.last.fm/music/Spirit+Catcher/Marc+Romboy+Presents+Musica+Electronica+Vol.+3",
+          "image":
+          [{"#text":"","size":"small"},
+            {"#text":"","size":"medium"},
+            {"#text":"","size":"large"},
+            {"#text":"","size":"extralarge"}
+          ],
+          "streamable":"0","mbid":""
+        },
+        {"name":"Tha Cather 3",
+          "artist":"Lil' Wayne",
+          "url":"https://www.last.fm/music/Lil%27+Wayne/Tha+Cather+3",
+          "image":
+          [{"#text":"","size":"small"},
+            {"#text":"","size":"medium"},
+            {"#text":"","size":"large"},
+            {"#text":"","size":"extralarge"}
+          ],
+          "streamable":"0","mbid":""
+        },
+        {"name":"3 - That Hideous Strength [[Disc 4]]",
+          "artist":"Willa Cather",
+          "url":"https://www.last.fm/music/Willa+Cather/3+-+That+Hideous+Strength+%5B%5BDisc+4%5D%5D",
+          "image":
+          [{"#text":"","size":"small"},
+            {"#text":"","size":"medium"},
+            {"#text":"","size":"large"},
+            {"#text":"","size":"extralarge"}
+          ],"streamable":"0","mbid":""}
+      ]
+    },
+    "@attr":
+    {
+      "for":"cather 3"
+    }
+  }
+}

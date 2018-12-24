@@ -27,7 +27,7 @@ class HomePresenter @Inject constructor(private val view: HomeContract.View, pri
                 }
 
                 override fun onError(e: Throwable) {
-                    view.showError(e.message!!)
+                    view.showError("Fetching data failed")
                 }
 
             })

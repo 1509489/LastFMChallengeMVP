@@ -1,6 +1,7 @@
 package com.pixelart.lastfmchallengemvp.ui.homescreen
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.test.espresso.idling.CountingIdlingResource
 import com.pixelart.lastfmchallengemvp.R
 import com.pixelart.lastfmchallengemvp.adapter.HomeAdapter
 import com.pixelart.lastfmchallengemvp.base.BaseActivity
@@ -18,6 +20,7 @@ import com.pixelart.lastfmchallengemvp.di.ApplicationModule
 import com.pixelart.lastfmchallengemvp.di.DaggerApplicationComponent
 import com.pixelart.lastfmchallengemvp.di.NetworkModule
 import com.pixelart.lastfmchallengemvp.model.Album
+import com.pixelart.lastfmchallengemvp.ui.detailscreen.DetailActivity
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity<HomeContract.Presenter>(),HomeContract.View,
@@ -30,6 +33,9 @@ class HomeActivity : BaseActivity<HomeContract.Presenter>(),HomeContract.View,
     lateinit var binding: ActivityHomeBinding
 
     private lateinit var adapter: HomeAdapter
+    private lateinit var albums: ArrayList<Album>
+
+    var countingIdlingResource = CountingIdlingResource("Network_Call")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +47,8 @@ class HomeActivity : BaseActivity<HomeContract.Presenter>(),HomeContract.View,
         binding.rvHome.adapter = adapter
 
         binding.btnSearch.setOnClickListener(this)
-
+        albums = ArrayList()
+        //countingIdlingResource.increment()
     }
 
     override fun getViewPresenter(): HomeContract.Presenter = presenter
@@ -61,13 +68,10 @@ class HomeActivity : BaseActivity<HomeContract.Presenter>(),HomeContract.View,
         binding.progressBar.visibility = View.INVISIBLE
     }
 
-    override fun showAlbums(albums: List<Album>) {
-        adapter.submitList(albums)
-    }
-
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.btnSearch ->{
+                countingIdlingResource.increment()
                 val searchKeyWord = binding.etSearch.text.toString()
                 presenter.getAlbums(searchKeyWord)
                 closeKeyboard()
@@ -75,8 +79,14 @@ class HomeActivity : BaseActivity<HomeContract.Presenter>(),HomeContract.View,
         }
     }
 
+    override fun showAlbums(albums: List<Album>) {
+        adapter.submitList(albums)
+        this.albums = albums as ArrayList<Album>
+        countingIdlingResource.decrement()
+    }
+
     private fun closeKeyboard(){
-        val view: View = this.currentFocus
+        val view: View? = this.currentFocus
         if (view != null){
             val inputMethodManager: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
@@ -84,6 +94,9 @@ class HomeActivity : BaseActivity<HomeContract.Presenter>(),HomeContract.View,
     }
 
     override fun onItemClicked(position: Int) {
-        Toast.makeText(this, "$position", Toast.LENGTH_SHORT).show()
+        val album  = albums[position]
+        startActivity(Intent(this, DetailActivity::class.java).also {
+            it.putExtra("album", album)
+        })
     }
 }
