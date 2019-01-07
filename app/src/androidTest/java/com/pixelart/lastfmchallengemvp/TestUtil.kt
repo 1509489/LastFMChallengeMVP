@@ -22,10 +22,11 @@ object TestUtil {
         val bufferedReader = BufferedReader(InputStreamReader(inputStream))
         val stringBuilder = StringBuilder()
 
-        val line: String = bufferedReader.readLine()
+        var line: String? = bufferedReader.readLine()
 
         while (line  != null) {
             stringBuilder.append(line)
+            line = bufferedReader.readLine()
         }
 
         bufferedReader.close()

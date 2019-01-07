@@ -23,7 +23,7 @@ import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 class HomeActivityTest{
-    private val FILE_NAME = "api_success"
+    private val FILE_NAME = "api_success.json"
     private val searchWord = "cather 3"
 
     private val activityTestRule  = ActivityTestRule<HomeActivity>(HomeActivity::class.java)
@@ -42,7 +42,7 @@ class HomeActivityTest{
             e.printStackTrace()
         }
 
-        //BASE_URL = mockWebServer.url("/").toString()
+        BASE_URL = mockWebServer.url("/").toString()
         activityTestRule.launchActivity(Intent())
     }
 
