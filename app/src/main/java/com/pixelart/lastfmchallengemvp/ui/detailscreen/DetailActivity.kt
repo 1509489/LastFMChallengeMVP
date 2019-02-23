@@ -2,11 +2,10 @@ package com.pixelart.lastfmchallengemvp.ui.detailscreen
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.View
 import com.pixelart.lastfmchallengemvp.R
 import com.pixelart.lastfmchallengemvp.base.BaseActivity
+import com.pixelart.lastfmchallengemvp.common.ALBUM_INTENT_KEY
 import com.pixelart.lastfmchallengemvp.common.GlideApp
 import com.pixelart.lastfmchallengemvp.databinding.ActivityDetailBinding
 import com.pixelart.lastfmchallengemvp.di.ApplicationModule
@@ -23,13 +22,9 @@ class DetailActivity : BaseActivity<DetailContract.Presenter>(), DetailContract.
 
     private var url = ""
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onStart() {
         super.onStart()
-        presenter.getAlbumDetails(intent)
+        presenter.getAlbumDetails(ALBUM_INTENT_KEY)
     }
 
     override fun getViewPresenter(): DetailContract.Presenter = presenter
@@ -48,11 +43,14 @@ class DetailActivity : BaseActivity<DetailContract.Presenter>(), DetailContract.
 
     }
 
-    override fun showAlbumDetails(album: Album) {
+    //Show the details of the album
+    override fun showAlbumDetails(intentKey: String) {
+        val album = intent.getParcelableExtra<Album>(intentKey)
         binder.apply {
             this.tvAlbumName.text = album.name
             this.tvArtist.text = album.artist
 
+            //Display album art
             GlideApp.with(this@DetailActivity)
                 .load(album.image[2].text)
                 .placeholder(R.drawable.placeholder_albumart)
@@ -63,8 +61,13 @@ class DetailActivity : BaseActivity<DetailContract.Presenter>(), DetailContract.
         url = album.url
     }
 
+    //Open album url to last fm in a browser
     fun onClick(v: View?) {
-        val uri = Uri.parse(url)
-        startActivity(Intent(Intent.ACTION_VIEW, uri))
+        when(v?.id){
+            R.id.btnListen ->{
+                val uri = Uri.parse(url)
+                startActivity(Intent(Intent.ACTION_VIEW, uri))
+            }
+        }
     }
 }

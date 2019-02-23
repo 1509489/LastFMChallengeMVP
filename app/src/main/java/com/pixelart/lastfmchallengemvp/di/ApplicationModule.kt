@@ -1,7 +1,6 @@
 package com.pixelart.lastfmchallengemvp.di
 
 import android.app.Activity
-import android.content.Intent
 import androidx.databinding.DataBindingUtil
 import com.pixelart.lastfmchallengemvp.R
 import com.pixelart.lastfmchallengemvp.base.BaseActivity
@@ -31,7 +30,7 @@ class ApplicationModule(private val baseActivity: BaseActivity<*>){
 
     @Provides
     @Singleton
-    fun providesDetailContractPresenter(/*intent: Intent*/): DetailContract.Presenter = DetailPresenter(baseActivity as DetailActivity)
+    fun providesDetailContractPresenter(): DetailContract.Presenter = DetailPresenter(baseActivity as DetailActivity)
 
     @Provides
     @Singleton

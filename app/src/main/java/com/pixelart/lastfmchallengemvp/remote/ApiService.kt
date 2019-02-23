@@ -11,8 +11,6 @@ interface ApiService {
     fun getAlbums(
         @Query("method")method: String,
         @Query("album")album: String,
-        @Query("page")page: Int,
-        @Query("limit")limit: Int,
         @Query("api_key")apiKey: String,
         @Query("format")format: String
     ): Single<ApiResponse>

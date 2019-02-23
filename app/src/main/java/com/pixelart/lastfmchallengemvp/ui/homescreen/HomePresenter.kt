@@ -12,8 +12,9 @@ import javax.inject.Inject
 class HomePresenter @Inject constructor(private val view: HomeContract.View, private val apiService: ApiService):
         HomeContract.Presenter{
 
+    //Get the list of album from the api
     override fun getAlbums(album: String) {
-        apiService.getAlbums(METHOD, album, PAGE, LIMIT, API_KEY, FORMAT)
+        apiService.getAlbums(METHOD, album, API_KEY, FORMAT)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<ApiResponse>{

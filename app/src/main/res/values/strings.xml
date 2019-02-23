@@ -2,4 +2,6 @@
     <string name="app_name">Last FM Challenge MVP</string>
     <string name="search_album">Search Album</string>
     <string name="search_button">search button</string>
+    <string name="todo">TODO</string>
+    <string name="listen_on_lastfm_com">Listen on LastFM.com</string>
 </resources>

@@ -22,7 +22,7 @@ import java.util.concurrent.Executor
 
 @RunWith(MockitoJUnitRunner::class)
 class TestHomePresenter{
-    private val ALBUM = "cather 3"
+    private val album = "cather 3"
 
     private lateinit var presenter: HomePresenter
     private lateinit var apiResponse: ApiResponse
@@ -30,6 +30,7 @@ class TestHomePresenter{
     @Mock private lateinit var view: HomeContract.View
     @Mock private lateinit var apiService: ApiService
 
+    //Setup the schedulers for testing
     companion object {
         @BeforeClass
         @JvmStatic
@@ -56,20 +57,22 @@ class TestHomePresenter{
         ))
     }
 
+    //Test for success
     @Test
     fun testApiSuccess(){
-        Mockito.`when`(apiService.getAlbums(METHOD, ALBUM, 1, 30, API_KEY, FORMAT))
+        Mockito.`when`(apiService.getAlbums(METHOD, album, API_KEY, FORMAT))
             .thenReturn(Single.just(apiResponse))
 
-        presenter.getAlbums(ALBUM)
+        presenter.getAlbums(album)
         Mockito.verify(view).showAlbums(Mockito.anyList())
     }
 
+    //Test for failure
     @Test
     fun testApiFail(){
-        Mockito.`when`(apiService.getAlbums(METHOD, ALBUM, 1, 30, API_KEY, FORMAT))
+        Mockito.`when`(apiService.getAlbums(METHOD, album, API_KEY,  FORMAT))
             .thenReturn(Single.error(Throwable()))
-        presenter.getAlbums(ALBUM)
+        presenter.getAlbums(album)
         Mockito.verify(view).showError("Fetching data failed")
     }
 }

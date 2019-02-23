@@ -5,20 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.test.espresso.idling.CountingIdlingResource
 import com.pixelart.lastfmchallengemvp.R
 import com.pixelart.lastfmchallengemvp.adapter.HomeAdapter
 import com.pixelart.lastfmchallengemvp.base.BaseActivity
+import com.pixelart.lastfmchallengemvp.common.ALBUM_INTENT_KEY
 import com.pixelart.lastfmchallengemvp.databinding.ActivityHomeBinding
 import com.pixelart.lastfmchallengemvp.di.ApplicationModule
 import com.pixelart.lastfmchallengemvp.di.DaggerApplicationComponent
-import com.pixelart.lastfmchallengemvp.di.NetworkModule
 import com.pixelart.lastfmchallengemvp.model.Album
 import com.pixelart.lastfmchallengemvp.ui.detailscreen.DetailActivity
 import javax.inject.Inject
@@ -48,7 +44,6 @@ class HomeActivity : BaseActivity<HomeContract.Presenter>(),HomeContract.View,
 
         binding.btnSearch.setOnClickListener(this)
         albums = ArrayList()
-        //countingIdlingResource.increment()
     }
 
     override fun getViewPresenter(): HomeContract.Presenter = presenter
@@ -56,7 +51,6 @@ class HomeActivity : BaseActivity<HomeContract.Presenter>(),HomeContract.View,
     override fun init() {
         DaggerApplicationComponent.builder()
             .applicationModule(ApplicationModule(this))
-            .networkModule(NetworkModule())
             .build().injectHomeActivity(this)
     }
 
@@ -68,13 +62,14 @@ class HomeActivity : BaseActivity<HomeContract.Presenter>(),HomeContract.View,
         binding.progressBar.visibility = View.INVISIBLE
     }
 
+    //Enter album name in the edit text and click search button to get list of albums
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.btnSearch ->{
                 countingIdlingResource.increment()
                 val searchKeyWord = binding.etSearch.text.toString()
                 presenter.getAlbums(searchKeyWord)
-                closeKeyboard()
+                closeKeyboard()//close soft keyboard
             }
         }
     }
@@ -93,10 +88,12 @@ class HomeActivity : BaseActivity<HomeContract.Presenter>(),HomeContract.View,
         }
     }
 
+    //Interface method to allow click interaction for the recycler view adapter
+    //open detail activity and pass the selected album through intent
     override fun onItemClicked(position: Int) {
         val album  = albums[position]
         startActivity(Intent(this, DetailActivity::class.java).also {
-            it.putExtra("album", album)
+            it.putExtra(ALBUM_INTENT_KEY, album)
         })
     }
 }
